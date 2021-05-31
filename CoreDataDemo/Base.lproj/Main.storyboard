@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,6 +27,21 @@
                                     <barButtonItem title="- Task" id="51c-Ba-86H">
                                         <connections>
                                             <action selector="onRemoveAction:" destination="BYZ-38-t0r" id="dXv-sX-Y1j"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Max?" id="Wtx-wg-SMn" userLabel="Max?">
+                                        <connections>
+                                            <action selector="onMaxQuery:" destination="BYZ-38-t0r" id="CO3-8F-FXO"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Delete" id="dAa-A9-pqF" userLabel="Max?">
+                                        <connections>
+                                            <action selector="onDelete:" destination="BYZ-38-t0r" id="YXf-5Y-6ja"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Last" id="C1G-7a-yVC" userLabel="Max?">
+                                        <connections>
+                                            <action selector="onLast:" destination="BYZ-38-t0r" id="tyX-B0-yHj"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>

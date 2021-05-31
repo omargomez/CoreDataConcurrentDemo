@@ -27,6 +27,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.presenter = MainPresenter(view: self, container: delegate.persistentContainer)
+        self.presenter.viewDidLoad()
     }
 
     @IBAction func onAddAction(_ sender: Any) {
@@ -36,12 +37,29 @@ class ViewController: UIViewController {
     @IBAction func onRemoveAction(_ sender: Any) {
         self.presenter.removeTask()
     }
+    
+    @IBAction func onMaxQuery(_ sender: Any) {
+        self.presenter.maxQuery()
+    }
+    
+    @IBAction func onDelete(_ sender: Any) {
+        self.presenter.onDelete()
+    }
+    
+    @IBAction func onLast(_ sender: Any) {
+        self.presenter.onLast()
+    }
+    
 }
 
 extension ViewController: MainView {
     
     func update(count: Int) {
         self.countLabel.text = String(count)
+    }
+    
+    func update(recordCount: Int) {
+        self.recordCountLabel.text = String(recordCount)
     }
     
     func onNewNumber() {
@@ -53,6 +71,13 @@ extension ViewController: MainView {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    func alert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+
     }
     
 }
