@@ -13,7 +13,6 @@ protocol MainView: class {
     func update(count: Int)
     func update(recordCount: Int)
     func alert(title: String, message: String)
-    func onNewNumber()
     
 }
 
@@ -22,26 +21,16 @@ class MainPresenter {
     weak var view: MainView!
     var tasks: [DispatchWorkItem]
     var queue = DispatchQueue(label: "tasks-queue", qos: .default, attributes: .concurrent)
-    let container: NSPersistentContainer
     var lastId: NSManagedObjectID?
+    let numberService: SomeNumberRepository = SomeNumberRepositoryImpl()
 
-    var currCount: Int? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SomeNumber")
-        do {
-            return try container.viewContext.count(for: fetchRequest)
-        } catch {
-            return nil
-        }
-    }
-    
-    init(view: MainView, container: NSPersistentContainer) {
+    init(view: MainView) {
         self.view = view
-        self.container = container
         tasks = []
     }
     
     func viewDidLoad() {
-        self.view.update(recordCount: self.currCount ?? -1 )
+        self.view.update(recordCount: (try? self.numberService.count()) ?? -1 )
         self.view.update(count: 0 )
     }
     
@@ -53,7 +42,8 @@ class MainPresenter {
             guard let task = aTask else {
                 return
             }
-            while self?.taskTick(task: task) ?? false {
+            while !task.isCancelled {
+                self?.taskTick()
                 Thread.sleep(forTimeInterval: Double.random(in: 0.5...1.5))
             }
         })
@@ -77,98 +67,50 @@ class MainPresenter {
         
     }
     
-    func taskTick(task: DispatchWorkItem) -> Bool {
-        guard !task.isCancelled else {
-            return false
-        }
-        
-        // logic
-        let context = self.container.newBackgroundContext()
-        context.performAndWait {
-            
-            guard let newNumber = NSEntityDescription.insertNewObject(forEntityName: "SomeNumber", into: context) as? SomeNumber else {
-                return
+    func taskTick() {
+        numberService.insert(amount: Int32.random(in: 0...Int32.max), { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let newID):
+                print("New Number added: \(newID)")
+                DispatchQueue.main.async {
+                    self.lastId = newID
+                    self.view.update(recordCount: (try? self.numberService.count()) ?? -1 )
+                }
+            case .failure(let error):
+                print("Error while adding: \(error.localizedDescription)")
             }
-
-            newNumber.amount = Int32.random(in: 0...Int32.max)
-            print("New Amount: \(newNumber.amount)")
-            
-            try? context.save()
-            
-            DispatchQueue.main.async {
-                self.lastId = newNumber.objectID
-                self.view.update(recordCount: self.currCount ?? -1 )
-            }
-        }
-        
-        return true
+        })
     }
-
+    
     func maxQuery() {
-        self.queue.async(execute: {
-            let context = self.container.newBackgroundContext()
-            context.performAndWait {
-                //1.
-                let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest()
-                request.entity = NSEntityDescription.entity(forEntityName: "SomeNumber", in: context)
-                request.resultType = NSFetchRequestResultType.dictionaryResultType
-
-                //2.
-                let keypathExpression = NSExpression(forKeyPath: "amount")
-                let maxExpression = NSExpression(forFunction: "max:", arguments: [keypathExpression])
-
-                let key = "maxValue"
-
-                //3.
-                let expressionDescription = NSExpressionDescription()
-                expressionDescription.name = key
-                expressionDescription.expression = maxExpression
-                expressionDescription.expressionResultType = .integer32AttributeType
-
-                //4.
-                request.propertiesToFetch = [expressionDescription]
-
-                var maxResult: Int32? = nil
-
-                do {
-                    //5.
-                    if let result = try context.fetch(request) as? [[String: Int32]], let dict = result.first {
-                       maxResult = dict[key]
-                    }
-                    
-                } catch {
-                    print("Failed to fetch max timestamp with error = \(error)")
+        self.numberService.maxAmount({ [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let maxValue):
+                DispatchQueue.main.async {
+                    self.view.alert(title: "Max Random", message: "The maximun generated number so far is \(maxValue)")
                 }
-                
-                if let maxResult = maxResult {
-                    DispatchQueue.main.async {
-                        self.view.alert(title: "Max Random", message: "The maximun generated number so far is \(maxResult)")
-                    }
-                }
-
+            case .failure(let error):
+                print("Error while getting max val: \(error.localizedDescription)")
             }
-
         })
     }
     
     func onDelete() {
-        self.queue.async(execute: {
-            let context = self.container.newBackgroundContext()
-            context.performAndWait {
-                let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "SomeNumber")
-                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-
-                do {
-                    try self.container.persistentStoreCoordinator.execute(deleteRequest, with: context)
-                    
-                    DispatchQueue.main.async {
-                        self.view.update(recordCount: self.currCount ?? -1 )
-                    }
-                } catch let error as NSError {
-                    self.view.alert(title: "Error while removing", message: error.localizedDescription)
-                }
-            }
+        self.numberService.deleteAll({ [weak self] result in
+            guard let self = self else { return }
             
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    self.lastId = nil
+                    self.view.update(recordCount: (try? self.numberService.count()) ?? -1 )
+                }
+            case .failure(let error):
+                print("Error while removind all records: \(error.localizedDescription)")
+            }
         })
     }
     
@@ -178,14 +120,35 @@ class MainPresenter {
             return
         }
         
-        if let object = try? self.container.viewContext.existingObject(with: last),
-           let lastNumber = object as? SomeNumber {
-            // do something with it
-            let msg = "Amount: \(lastNumber.amount)"
-            self.view.alert(title: "Last ID", message: msg)
+        do {
+            if let lastNumber = try self.numberService.someNumber(withId: last) {
+                let msg = "Amount: \(lastNumber.amount)"
+                self.view.alert(title: "Last ID", message: msg)
+            } else {
+                self.view.alert(title: "Last ID", message: "No Object found")
+            }
+        } catch {
+            self.view.alert(title: "Error", message: error.localizedDescription)
         }
-        else {
-            self.view.alert(title: "Last ID", message: "No Object found")
-        }
+    }
+    
+    func batchInsert() {
+        
+        let amounts: [Int32] = (0...Int.random(in: 700...900))
+           .lazy
+            .map { _ in Int32.random(in: 0...Int32.max) }
+
+        numberService.batchInsert(amounts: amounts, { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let idArray):
+                    self.lastId = idArray.last
+                    self.view.update(recordCount: (try? self.numberService.count()) ?? -1 )
+                case .failure(let error):
+                    self.view.alert(title: "Error while batch adding", message: error.localizedDescription)
+                }
+            }
+        })
+        
     }
 }

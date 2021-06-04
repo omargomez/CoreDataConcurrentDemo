@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07A48A4E2666A112004EC6C7 /* SomeNumberRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A48A4D2666A112004EC6C7 /* SomeNumberRepository.swift */; };
+		07A48A532666A5EE004EC6C7 /* DataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A48A522666A5EE004EC6C7 /* DataStack.swift */; };
 		7905DFD626617E6800BF04BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7905DFD526617E6800BF04BE /* AppDelegate.swift */; };
 		7905DFD826617E6800BF04BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7905DFD726617E6800BF04BE /* SceneDelegate.swift */; };
 		7905DFDA26617E6800BF04BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7905DFD926617E6800BF04BE /* ViewController.swift */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07A48A4D2666A112004EC6C7 /* SomeNumberRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeNumberRepository.swift; sourceTree = "<group>"; };
+		07A48A522666A5EE004EC6C7 /* DataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStack.swift; sourceTree = "<group>"; };
 		7905DFD226617E6800BF04BE /* CoreDataDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7905DFD526617E6800BF04BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7905DFD726617E6800BF04BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +84,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		07A48A4C2666A0BA004EC6C7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				07A48A4D2666A112004EC6C7 /* SomeNumberRepository.swift */,
+				07A48A522666A5EE004EC6C7 /* DataStack.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		7905DFC926617E6800BF04BE = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +116,7 @@
 		7905DFD426617E6800BF04BE /* CoreDataDemo */ = {
 			isa = PBXGroup;
 			children = (
+				07A48A4C2666A0BA004EC6C7 /* Model */,
 				7905E0182661837100BF04BE /* View */,
 				7905E0172661836700BF04BE /* Presenter */,
 				7905DFD526617E6800BF04BE /* AppDelegate.swift */,
@@ -280,8 +294,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07A48A4E2666A112004EC6C7 /* SomeNumberRepository.swift in Sources */,
 				7905E01D266184FD00BF04BE /* MainPresenter.swift in Sources */,
 				7905DFDA26617E6800BF04BE /* ViewController.swift in Sources */,
+				07A48A532666A5EE004EC6C7 /* DataStack.swift in Sources */,
 				7905DFE026617E6800BF04BE /* CoreDataDemo.xcdatamodeld in Sources */,
 				7905DFD626617E6800BF04BE /* AppDelegate.swift in Sources */,
 				7905DFD826617E6800BF04BE /* SceneDelegate.swift in Sources */,

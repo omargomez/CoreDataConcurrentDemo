@@ -15,18 +15,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var countLabel: UILabel!
     @IBOutlet weak var recordCountLabel: UILabel!
     
-    var delegate: AppDelegate {
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            fatalError("No container")
-        }
-        
-        return delegate
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.presenter = MainPresenter(view: self, container: delegate.persistentContainer)
+        self.presenter = MainPresenter(view: self)
         self.presenter.viewDidLoad()
     }
 
@@ -50,6 +42,9 @@ class ViewController: UIViewController {
         self.presenter.onLast()
     }
     
+    @IBAction func batchAction(_ sender: Any) {
+        self.presenter.batchInsert()
+    }
 }
 
 extension ViewController: MainView {
@@ -62,22 +57,10 @@ extension ViewController: MainView {
         self.recordCountLabel.text = String(recordCount)
     }
     
-    func onNewNumber() {
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SomeNumber")
-        do {
-            let count = try delegate.persistentContainer.viewContext.count(for: fetchRequest)
-            self.recordCountLabel.text = String(count)
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
     func alert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-
     }
     
 }

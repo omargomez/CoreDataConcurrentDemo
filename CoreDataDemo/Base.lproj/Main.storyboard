@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,11 +13,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CoreDataDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hvh-it-z8r">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
                                     <barButtonItem title="+ Task" id="5zQ-BL-lPx">
                                         <connections>
@@ -44,16 +44,15 @@
                                             <action selector="onLast:" destination="BYZ-38-t0r" id="tyX-B0-yHj"/>
                                         </connections>
                                     </barButtonItem>
-                                </items>
-                            </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="44j-HU-T0i">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                                <items>
-                                    <barButtonItem title="Item" id="1sc-SJ-h0v"/>
+                                    <barButtonItem title="Batch" id="OLZ-FQ-02O" userLabel="Max?">
+                                        <connections>
+                                            <action selector="batchAction:" destination="BYZ-38-t0r" id="Qsg-tz-iV2"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task count: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oup-7F-Ycn">
-                                <rect key="frame" x="16" y="62" width="98" height="21"/>
+                                <rect key="frame" x="16" y="106" width="98" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="98" id="e6m-Gh-cOx"/>
                                 </constraints>
@@ -62,19 +61,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record Count:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uD1-jV-0av">
-                                <rect key="frame" x="16" y="91" width="117" height="21"/>
+                                <rect key="frame" x="16" y="135" width="117" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MDl-tv-gFk">
-                                <rect key="frame" x="122" y="62" width="182" height="21"/>
+                                <rect key="frame" x="122" y="106" width="276" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SB5-fx-H0d">
-                                <rect key="frame" x="151" y="91" width="41.5" height="21"/>
+                                <rect key="frame" x="151" y="135" width="41.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -83,15 +82,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="44j-HU-T0i" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="04n-fp-PLT"/>
                             <constraint firstItem="SB5-fx-H0d" firstAttribute="centerY" secondItem="uD1-jV-0av" secondAttribute="centerY" id="3Lg-ZP-Icb"/>
                             <constraint firstItem="Hvh-it-z8r" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="8PY-tk-Hir"/>
-                            <constraint firstItem="44j-HU-T0i" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="CJR-lZ-FIV"/>
                             <constraint firstItem="MDl-tv-gFk" firstAttribute="centerY" secondItem="Oup-7F-Ycn" secondAttribute="centerY" id="E1k-qW-lvV"/>
                             <constraint firstItem="Hvh-it-z8r" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="FNg-CQ-AE2"/>
                             <constraint firstItem="MDl-tv-gFk" firstAttribute="leading" secondItem="Oup-7F-Ycn" secondAttribute="trailing" constant="8" symbolic="YES" id="K1h-LH-FCS"/>
                             <constraint firstItem="Hvh-it-z8r" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="NZw-AX-wj8"/>
-                            <constraint firstItem="44j-HU-T0i" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="S2z-G9-y0k"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MDl-tv-gFk" secondAttribute="trailing" constant="16" id="U8e-Bd-N96"/>
                             <constraint firstItem="SB5-fx-H0d" firstAttribute="leading" secondItem="uD1-jV-0av" secondAttribute="trailing" constant="18" id="UgJ-bu-Sm3"/>
                             <constraint firstItem="Oup-7F-Ycn" firstAttribute="top" secondItem="Hvh-it-z8r" secondAttribute="bottom" constant="18" id="XwB-rX-nXe"/>
